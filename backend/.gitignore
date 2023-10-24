@@ -1,0 +1,19 @@
+# Virtual Environment
+venv/
+env/
+
+# Compiled Python files
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+
+# Environment Variables
+.env
+
+# Databases
+*.db
+*.sqlite
+
+# Logs
+*.log
