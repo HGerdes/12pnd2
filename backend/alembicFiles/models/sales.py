@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from sqlalchemy.orm import relationship
+from .db import db
 
 class Sales(db.Model):
   __tablename__ = "sales"
@@ -8,7 +8,10 @@ class Sales(db.Model):
   sale_id = db.Column(db.Integer, primary_key=True)
   customer_id = db.Column(db.Integer, db.ForeignKey("customers.customer_id"), nullable=False)
   sale_date = db.Column(db.Date, nullable=False)
-  sale_amount = db.Column(db.Integer, nullable=False)
+  sale_amount = db.Column(db.Float, nullable=False)
+
+  customers = db.relationship("Customers", back_populates="sales")
+
 
   def to_dict(self):
     return {
