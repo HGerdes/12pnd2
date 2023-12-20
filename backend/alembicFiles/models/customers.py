@@ -15,6 +15,7 @@ class Customers(db.Model, UserMixin):
   hashed_password=db.Column(db.String(255), nullable=False)
 
   sales = db.relationship("Sales", back_populates="customers")
+  ind_cup_sale = db.relationship("IndCupSale", back_populates="customers")
 
   def set_password(self, password):
     self.hashed_password = generate_password_hash(password)

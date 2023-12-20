@@ -11,6 +11,7 @@ class Sales(db.Model):
   sale_amount = db.Column(db.Float, nullable=False)
 
   customers = db.relationship("Customers", back_populates="sales")
+  ind_cup_sale = db.relationship("IndCupSale", back_populates="sales")
 
 
   def to_dict(self):
