@@ -10,6 +10,8 @@ class AnalysisCup(db.Model):
   cost = db.Column(db.Float, nullable=False)
   price = db.Column(db.Float, nullable=False)
 
+  ind_cup_sale = db.relationship("IndCupSale", back_populates="inv_analysis_cups")
+
   def to_dict(self):
     return {
       "id": self.id,

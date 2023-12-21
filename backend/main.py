@@ -11,9 +11,11 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 
-from alembicFiles.models import db, Customers
+from alembicFiles.models import db, Customers, Sales
 from api.auth_routes import auth_routes
 from api.customer_routes import customer_routes
+from api.sale_routes import sale_routes
+from api.analysis_cup_routes import analysis_cup_routes
 
 # Setup login manager
 login = LoginManager(app)
@@ -24,6 +26,8 @@ def load_user(customer_id):
     return Customers.query.get(int(customer_id))
 
 #blueprint registers
+app.register_blueprint(analysis_cup_routes, url_prefix="/api/cups")
+app.register_blueprint(sale_routes, url_prefix="/api/sales")
 app.register_blueprint(customer_routes, url_prefix='/api/customers')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 
