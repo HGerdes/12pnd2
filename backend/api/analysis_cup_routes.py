@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
 from alembicFiles.models import AnalysisCup
+from forms import EditAnalysisCupForm
 
 analysis_cup_routes = Blueprint("inv_analysis_cups", __name__)
 
@@ -19,7 +20,7 @@ def create_cup():
   try:
     new_cup = request.json
     cup = AnalysisCup(
-      cup_type = new_cup["cup_type"].
+      cup_type = new_cup["cup_type"],
       quantity = new_cup["quantity"],
       cost = new_cup["cost"],
       price = new_cup["price"]
@@ -33,10 +34,22 @@ def create_cup():
 @analysis_cup_routes.route("/<int:id>", methods=["PATCH"])
 def update_cup(id):
   cup = AnalysisCup.query.get(id)
-  form = EditCupForm()
+  if not cup:
+    return jsonify({"Error: cup not found"}), 404
+
+  form = EditAnalysisCupForm()
   form["csrf_token"].data = request.cookies["csrf_token"]
   if form.validate_on_submit():
-    cup.cup_type = form.data["cup"]
+    cup.quantity = form.data["quantity"]
+    cup.cost = form.data["cost"]
+    cup.price = form.data["price"]
     db.session.commit()
     return cup.to_dict()
   return jsonify(form.errors), 400
+
+@analysis_cup_routes.route("/<int:id>", methods=["DELETE"])
+def delete_cup(id):
+  cup = AnalysisCup.query.filter_by(id=id).first()
+  db.session.delete(cup)
+  db.session.commit()
+  return cup.to_dict()
